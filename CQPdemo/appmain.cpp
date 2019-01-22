@@ -89,21 +89,22 @@ CQEVENT(int32_t, __eventPrivateMsg, 24)(int32_t subType, int32_t msgId, int64_t 
 	//注意：应用优先级设置为"最高"(10000)时，不得使用本返回值
 	//如果不回复消息，交由之后的应用/过滤器处理，这里 return EVENT_IGNORE - 忽略本条消息
 	//CQ_sendPrivateMsg(ac, fromQQ, transferCQEmotion(14));
+	Connection* db = new Connection();
 	if (strcmp(msg, "查询课表") == 0)
 	{
-		Connection* db = new Connection();
 		const char* str = db->getClassTableByQQ(fromQQ);
 		CQ_sendPrivateMsg(ac, fromQQ, str);
 	}
-	else if (strcmp(msg, "签到"))
+	else if (strcmp(msg, "签到") == 0)
 	{
-		//TODO:签到
+		const char* str = db->checkin(fromQQ);
+		CQ_sendPrivateMsg(ac, fromQQ, str);
 	}
 	else if (strcmp(msg, "查询邮件"))
 	{
 
 	}
-	else if(strcmp)
+	delete db;
 	return EVENT_BLOCK;
 	//return EVENT_IGNORE;
 }

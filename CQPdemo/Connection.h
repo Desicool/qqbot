@@ -6,5 +6,6 @@ private:
 public:
 	Connection();
 	const char* getClassTableByQQ(int64_t qqID);
+	const char* checkin(int64_t qqID);
 	~Connection();
 };
