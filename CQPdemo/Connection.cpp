@@ -4,7 +4,7 @@
 Connection::Connection()
 {
 	/*driver = get_driver_instance();
-	con = driver->connect("localhost:3306", "root", "l1728L3sh+");
+	con = driver->connect("localhost:3306", "root", "");
 	con->setSchema("qqbot");*/
 }
 
