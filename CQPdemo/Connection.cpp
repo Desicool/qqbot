@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Connection.h"
 #include <ctime>
-
 Connection::Connection()
 {
 	/*driver = get_driver_instance();
@@ -186,6 +185,12 @@ const char * Connection::queryEmail(int64_t qqID)
 		CloseHandle(handle);
 		return "您当前没有未读邮件";
 	}
+}
+
+
+const char * Connection::solveShortest(int64_t qqID)
+{
+	return "";
 }
 
 
