@@ -114,6 +114,10 @@ CQEVENT(int32_t, __eventPrivateMsg, 24)(int32_t subType, int32_t msgId, int64_t 
 		const char* str = "[CQ:image,file=campus.jpg]";
 		CQ_sendPrivateMsg(ac, fromQQ, str);
 	}
+	else if (strcmp(msg, "/help") == 0)
+	{
+		CQ_sendPrivateMsg(ac, fromQQ, "当前可用的命令有：签到，查询余额，查询课表，查询邮件，校园导航。\n功能正在不断开发中，敬请期待~");
+	}
 	delete db;
 	return EVENT_BLOCK;
 	//return EVENT_IGNORE;
@@ -156,6 +160,10 @@ CQEVENT(int32_t, __eventGroupMsg, 36)(int32_t subType, int32_t msgId, int64_t fr
 		std::string str = "[CQ:at,qq=" + ::to_string(fromQQ) + "] " +
 			"[CQ:image,file=campus.jpg]";
 		CQ_sendGroupMsg(ac, fromGroup, str.c_str());
+	}
+	else if (strcmp(msg, "/help") == 0)
+	{
+		CQ_sendPrivateMsg(ac, fromGroup, "当前可用的命令有：签到，查询余额，查询课表，查询邮件，校园导航。\n功能正在不断开发中，敬请期待~");
 	}
 	delete db;
 	return EVENT_BLOCK;
