@@ -38,7 +38,7 @@ const char * Connection::checkin(int64_t qqID)
 	std::string path = std::to_string(qqID) + "_checkin.txt";
 	HANDLE handle = CreateFileA(path.c_str(), 
 		GENERIC_READ | GENERIC_WRITE, 
-		FILE_SHARE_READ, 
+		0, 
 		NULL, 
 		OPEN_ALWAYS,
 		FILE_ATTRIBUTE_NORMAL, 
