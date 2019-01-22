@@ -15,7 +15,6 @@ using namespace std;
 int ac = -1; //AuthCode 调用酷Q的方法时需要用到
 bool enabled = false;
 
-
 /* 
 * 返回应用的ApiVer、Appid，打包后将不会调用
 */
@@ -100,9 +99,20 @@ CQEVENT(int32_t, __eventPrivateMsg, 24)(int32_t subType, int32_t msgId, int64_t 
 		const char* str = db->checkin(fromQQ);
 		CQ_sendPrivateMsg(ac, fromQQ, str);
 	}
-	else if (strcmp(msg, "查询邮件"))
+	else if (strcmp(msg, "查询余额") == 0)
 	{
-
+		const char* str = db->queryMoney(fromQQ);
+		CQ_sendPrivateMsg(ac, fromQQ, str);
+	}
+	else if (strcmp(msg, "查询邮件") == 0)
+	{
+		const char* str = db->queryEmail(fromQQ);
+		CQ_sendPrivateMsg(ac, fromQQ, str);
+	}
+	else if (strcmp(msg, "校园导航") == 0)
+	{
+		const char* str = "[CQ:image,file=campus.jpg]";
+		CQ_sendPrivateMsg(ac, fromQQ, str);
 	}
 	delete db;
 	return EVENT_BLOCK;
@@ -113,9 +123,42 @@ CQEVENT(int32_t, __eventPrivateMsg, 24)(int32_t subType, int32_t msgId, int64_t 
 /*
 * Type=2 群消息
 */
-CQEVENT(int32_t, __eventGroupMsg, 36)(int32_t subType, int32_t msgId, int64_t fromGroup, int64_t fromQQ, const char *fromAnonymous, const char *msg, int32_t font) {
-	
-	return EVENT_IGNORE; //关于返回值说明, 见“_eventPrivateMsg”函数
+CQEVENT(int32_t, __eventGroupMsg, 36)(int32_t subType, int32_t msgId, int64_t fromGroup, int64_t fromQQ, const char *fromAnonymous, const char *msg, int32_t font) 
+{
+	Connection* db = new Connection();
+	if (strcmp(msg, "查询课表") == 0)
+	{
+		std::string str = "[CQ:at,qq=" + ::to_string(fromQQ) + "] " +
+			db->getClassTableByQQ(fromQQ);
+		CQ_sendGroupMsg(ac, fromGroup, str.c_str());
+	}
+	else if (strcmp(msg, "签到") == 0)
+	{
+		std::string str = "[CQ:at,qq=" + ::to_string(fromQQ) + "] " +
+			db->checkin(fromQQ);
+		CQ_sendGroupMsg(ac, fromGroup, str.c_str());
+	}
+	else if (strcmp(msg, "查询余额") == 0)
+	{
+		std::string str = "[CQ:at,qq=" + ::to_string(fromQQ) + "] " +
+			db->queryMoney(fromQQ);
+		CQ_sendGroupMsg(ac, fromGroup, str.c_str());
+	}
+	else if (strcmp(msg, "查询邮件") == 0)
+	{
+		std::string str = "[CQ:at,qq=" + ::to_string(fromQQ) + "] " +
+			db->queryEmail(fromQQ);
+		CQ_sendGroupMsg(ac, fromGroup, str.c_str());
+	}
+	else if (strcmp(msg, "校园导航") == 0)
+	{
+
+		std::string str = "[CQ:at,qq=" + ::to_string(fromQQ) + "] " +
+			"[CQ:image,file=campus.jpg]";
+		CQ_sendGroupMsg(ac, fromGroup, str.c_str());
+	}
+	delete db;
+	return EVENT_BLOCK;
 }
 
 
@@ -178,7 +221,7 @@ CQEVENT(int32_t, __eventFriend_Add, 16)(int32_t subType, int32_t sendTime, int64
 */
 CQEVENT(int32_t, __eventRequest_AddFriend, 24)(int32_t subType, int32_t sendTime, int64_t fromQQ, const char *msg, const char *responseFlag) {
 
-	//CQ_setFriendAddRequest(ac, responseFlag, REQUEST_ALLOW, "");
+	CQ_setFriendAddRequest(ac, responseFlag, REQUEST_ALLOW, "");
 
 	return EVENT_IGNORE; //关于返回值说明, 见“_eventPrivateMsg”函数
 }
@@ -197,7 +240,10 @@ CQEVENT(int32_t, __eventRequest_AddGroup, 32)(int32_t subType, int32_t sendTime,
 	//} else if (subType == 2) {
 	//	CQ_setGroupAddRequestV2(ac, responseFlag, REQUEST_GROUPINVITE, REQUEST_ALLOW, "");
 	//}
-
+	if (subType == 2)
+	{
+		CQ_setGroupAddRequestV2(ac, responseFlag, REQUEST_GROUPINVITE, REQUEST_ALLOW, "");
+	}
 	return EVENT_IGNORE; //关于返回值说明, 见“_eventPrivateMsg”函数
 }
 
