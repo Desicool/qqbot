@@ -163,7 +163,7 @@ CQEVENT(int32_t, __eventGroupMsg, 36)(int32_t subType, int32_t msgId, int64_t fr
 	}
 	else if (strcmp(msg, "/help") == 0)
 	{
-		CQ_sendPrivateMsg(ac, fromGroup, "当前可用的命令有：签到，查询余额，查询课表，查询邮件，校园导航。\n功能正在不断开发中，敬请期待~");
+		CQ_sendGroupMsg(ac, fromGroup, "当前可用的命令有：签到，查询余额，查询课表，查询邮件，校园导航。\n功能正在不断开发中，敬请期待~");
 	}
 	delete db;
 	return EVENT_BLOCK;
